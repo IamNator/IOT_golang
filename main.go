@@ -1,6 +1,7 @@
 package main
 
 //This api accepts data from an Energy meter and stores it to a mysql database
+//Energy amount, time, and Customer Id
 
 import (
 	//	"database/sql"
