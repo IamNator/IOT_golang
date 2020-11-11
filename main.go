@@ -15,9 +15,8 @@ import (
 
 func main() {
 
-	//http.Handle("/", fileServer)
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/api/insert/{id}", InsertHandler).Methods("GET")
+	router.HandleFunc("/api/insert", InsertHandler).Methods("POST")
 	router.HandleFunc("/api/fetch/{id}", FetchHandler).Methods("GET")
 	fmt.Println("Server started on part 9080")
 

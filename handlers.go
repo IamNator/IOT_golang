@@ -5,26 +5,34 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
-	"time"
+	//"time"
 )
 
 type data struct {
-	id         string    `json:"id`          //customer ID
-	lastUpdate time.Time `json:"lastUpdate"` //time of update
-	energy     float64   `json:"energy"`     //amount of Energy consumed
+	id string `json:"id` //customer ID
+	//lastUpdate time.Time `json:"lastUpdate"` //time of update
+	energy string `json:"energy"` //amount of Energy consumed
 }
 
 func InsertHandler(res http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id := vars["id"]
-	fmt.Fprintln(res, "data shows", id)
+	decoder := json.NewDecoder(req.Body)
+	var info data
+	err := decoder.Decode(&info)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Fprintf(res, " id : %s", info.id) //prints the request to CLI
 }
 
 func FetchHandler(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(req)
-	id := vars["id"]
-	info := data{id: id, lastUpdate: time.Now(), energy: 234.45}
+	vars := mux.Vars(req) //creates a Map values passed in url
+	id := vars["id"]      //Extracted from requested url
+	info := data{
+		id: id,
+		//lastUpdate: "242",//time.Now(),
+		energy: "ewrwq", // 234.45,
+	}
 	json.NewEncoder(res).Encode(info)
 
 }
