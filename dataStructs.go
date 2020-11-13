@@ -8,15 +8,15 @@ type UserDetails struct {
 
 type Meter struct {
 	//	meterID                 string
-	lastupdate              string `json:"last_update"`
+	Lastupdate              string `json:"last_update"`
 	CurrentPowerConsumption string `json:"current_power_consumption"`
 	TotalEnegyConsumed      string `json:"total_energy_consumed"` //Total consumed in last 30 days
 }
 
 type Device struct {
-	name                    string `json:"name"`                      //Fan, TV
-	location                string `json:"location"`                  // kitchen, bathroom
-	state                   string `json:"state"`                     // on/off
+	Name                    string `json:"name"`                      //Fan, TV
+	Location                string `json:"location"`                  // kitchen, bathroom
+	State                   string `json:"state"`                     // on/off
 	CurrentPowerConsumption string `json:"current_power_consumption"` //eg 45watts
 }
 

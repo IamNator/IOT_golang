@@ -1,24 +1,23 @@
 {
-    "Customer" : {
-        
-        "id":"1",
 
-        "user_details": {
-            "first_name":"Nator",
-            "last_name":"Verinumber",
-            "gps":"12X,34Y, dda3"
-        },
-        "meter":  {
-           "last_update": "23-11-2020",
-           "current_power_consumption":"3445",
-           "total_energy_consumed": "345324334"
-        },
-        "devices": [{
-            "name": "fan",                
-            "location":"kitchen",        
-            "state": "on/off",                   
-           "current_power_consumption": "100"
-        }]
-    }
+    "id":"1",
+
+    "user_details": {
+        "first_name":"Nator",
+        "last_name":"Verinumber",
+        "gps":"12X,34Y, dda3"
+    },
+    "meter":  {
+        "last_update":"23-11-2020",
+        "current_power_consumption":"3445",
+        "total_energy_consumed":"345324334"
+    },
+    "devices": [{
+        "name":"fan",                
+        "location":"kitchen",        
+        "state":"on/off",                   
+        "current_power_consumption":"100"
+    }]
+    
 }
 
