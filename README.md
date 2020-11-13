@@ -1,5 +1,4 @@
-# myGoApi
-Building my golang Apis
+# HOUSE ENERGY IOT API
 
 
-This API receives data from a smart meter and stores it to mySQL database.
+This api receives information from the different IoT devices in the house, stores this data in mongoDB and renders the information when requested
