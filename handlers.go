@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	//	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
@@ -10,19 +10,15 @@ import (
 
 func InsertHandler(res http.ResponseWriter, req *http.Request) {
 
-	var info Customer
-	json.NewDecoder(req.Body).Decode(&info)
-	fmt.Fprintf(res, " data inserted : %s", info)
-
-	file, _ := os.Open("data.json")
-	defer file.Close()
+	// file, _ := os.Open("data.json")
+	// defer file.Close()
 
 	var jsonData Customer
 
 	jsonData.ID = "45"
-	json.NewDecoder(file).Decode(&jsonData)
-	json.NewEncoder(file).Encode(jsonData)
-	json.NewEncoder(res).Encode(jsonData)
+	json.NewDecoder(req.Body).Decode(&jsonData)
+	//Insert to MongoDb
+	//json.NewEncoder(res).Encode(&jsonData)
 
 }
 
