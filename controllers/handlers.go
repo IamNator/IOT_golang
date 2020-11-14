@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/IamNator/IOT_golang/models"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -19,6 +20,7 @@ func InsertHandler(res http.ResponseWriter, req *http.Request) {
 	jsonData.ID = "45"
 	//Insert to MongoDb
 	//json.NewEncoder(res).Encode(&jsonData)
+	fmt.Fprintln(res, "Data inserted successfully")
 
 }
 
@@ -30,7 +32,7 @@ func FetchHandler(res http.ResponseWriter, req *http.Request) {
 
 	var jsonData models.Customer
 
-	file, _ := os.Open("data.json")
+	file, _ := os.Open("controllers/data.json")
 	defer file.Close()
 
 	json.NewDecoder(file).Decode(&jsonData)
