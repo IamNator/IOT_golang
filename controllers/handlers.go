@@ -10,7 +10,27 @@ import (
 	"os"
 )
 
-func InsertHandler(res http.ResponseWriter, req *http.Request) {
+//For mongodb Access
+type UserController struct {
+	session *mgo.Session
+}
+
+func NewUserController(s *mgo.Session) *UserController {
+	return &UserController{s}
+}
+
+func GetSession() *mgo.Session {
+	//Connect to our local mongo
+	s, err := mgo.Dial("mongodb://localhost")
+
+	//Check if connection err, is mongo running?
+	if err != nil {
+		panic(err)
+	}
+	return s
+}
+
+func (uc UserController) InsertHandler(res http.ResponseWriter, req *http.Request) {
 
 	// file, _ := os.Open("data.json")
 	// defer file.Close()
@@ -25,7 +45,7 @@ func InsertHandler(res http.ResponseWriter, req *http.Request) {
 
 }
 
-func FetchHandler(res http.ResponseWriter, req *http.Request) {
+func (uc UserController) FetchHandler(res http.ResponseWriter, req *http.Request) {
 
 	res.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(req) //creates a Map values passed in url
@@ -41,25 +61,4 @@ func FetchHandler(res http.ResponseWriter, req *http.Request) {
 
 	json.NewEncoder(res).Encode(&jsonData)
 
-}
-
-//For MongoDB access
-
-type UserController struct {
-	session *mgo.Session
-}
-
-func NewUerController(s *mgo.Session) *UserController {
-	return &UserController{s}
-}
-
-func GetSession() *mgo.Session {
-	//Connect to our local mongo
-	s, err := mgo.Dial("mongodb://localhost")
-
-	//Check if connection err, is mongo running?
-	if err != nil {
-		panic(err)
-	}
-	return s
 }
