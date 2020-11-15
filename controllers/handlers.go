@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/IamNator/IOT_golang/models"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2"
 	"net/http"
 	"os"
 )
@@ -40,4 +41,25 @@ func FetchHandler(res http.ResponseWriter, req *http.Request) {
 
 	json.NewEncoder(res).Encode(&jsonData)
 
+}
+
+//For MongoDB access
+
+type UserController struct {
+	session *mgo.Session
+}
+
+func NewUerController(s *mgo.Session) *UserController {
+	return &UserController{s}
+}
+
+func GetSession() *mgo.Session {
+	//Connect to our local mongo
+	s, err := mgo.Dial("mongodb://localhost")
+
+	//Check if connection err, is mongo running?
+	if err != nil {
+		panic(err)
+	}
+	return s
 }
