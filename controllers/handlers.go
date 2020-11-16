@@ -34,7 +34,7 @@ func GetSession() *mgo.Session {
 func (uc UserController) InsertHandler(res http.ResponseWriter, req *http.Request) {
 
 	// file, _ := os.Open("data.json")
-	// defer file.Close()
+	// defer file.Close() //Closes file
 
 	var jsonData models.Customer
 	json.NewDecoder(req.Body).Decode(&jsonData)
