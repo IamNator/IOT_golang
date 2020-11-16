@@ -1,5 +1,9 @@
 package models
 
+import (
+	"gopkg.in/mgo.v2/bson"
+)
+
 type UserDetails struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
@@ -22,8 +26,8 @@ type Device struct {
 
 /*****************Main struct **************/
 type Customer struct {
-	ID          string       `json: "id"`
-	UserDetails *UserDetails `json:"user_details"`
-	Meter       *Meter       `json:"meter"`
-	Devices     []Device     `json:"devices"`
+	ID          bson.ObjectId `json: "id"`
+	UserDetails *UserDetails  `json:"user_details"`
+	Meter       *Meter        `json:"meter"`
+	Devices     []Device      `json:"devices"`
 }
