@@ -12,18 +12,17 @@ import (
 )
 
 //For mongodb Access
-type UserController struct {
-	session *mgo.Session
+type UserController struct {       //data type associated with desired methods
+	session *mgo.Session 
 }
 
-func NewUserController(s *mgo.Session) *UserController {
+func NewUserController(s *mgo.Session) *UserController { //Embeds the object in a function that returns address of struct...(or a datatype with the desired methods)
 	return &UserController{s}
 }
 
-func GetSession() *mgo.Session {
+func GetSession() *mgo.Session {  //Returns the address of the newly created object
 	//Connect to our local mongo
 	s, err := mgo.Dial("mongodb://localhost") //listens on port 27017
-
 	//Check if connection err, is mongo running?
 	if err != nil {
 		panic(err)
@@ -40,7 +39,9 @@ func (uc UserController) InsertHandler(res http.ResponseWriter, req *http.Reques
 	json.NewDecoder(req.Body).Decode(&jsonData)
 	jsonData.ID = bson.NewObjectId()
 	//Insert to MongoDb
-	uc.session.DB("iot-golang").C("data").Insert(jsonData)
+	uc.session.DB("iot-golang").C("data").Insert(jsonData) //Inserts the data in MongoDb
+
+	//response back to client
 	jsn_data, _ := json.Marshal(jsonData)
 	res.Header().Set("Content-Type", "application/json")
 	res.WriteHeader(http.StatusCreated) //201
@@ -51,18 +52,20 @@ func (uc UserController) InsertHandler(res http.ResponseWriter, req *http.Reques
 func (uc UserController) FetchHandler(res http.ResponseWriter, req *http.Request) {
 
 	res.Header().Set("Content-Type", "application/json")
-	//vars := mux.Vars(req) //creates a Map values passed in url
-	//id := vars["id"]      //Extracted from requested url
-
+	
 	var jsonData models.Customer
+	var := mux.Vars(req)
+	id := var["id"]
 
-	file, _ := os.Open("controllers/data.json")
-	defer file.Close()
+	if err := uc.session.DB("iot-golang").C("data").FindId(id).One(&jsonData); 	err != nil {
+			res.WriteHeader(404)  //Page not found
+			return
+	}
 
-	json.NewDecoder(file).Decode(&jsonData)
-	//jsonData.ID = id
-
-	json.NewEncoder(res).Encode(&jsonData)
+	jsn_data, _ := json.Marshal(jsonData)
+	res.WriteHeader("Content-Type", "application/json")
+	res.WriteHeader(http.StatusCreated)
+	fwt.Fprintf(res, "%s", jsn_data)
 
 }
 
