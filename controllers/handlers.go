@@ -41,38 +41,38 @@ func (uc UserController) InsertHandler(res http.ResponseWriter, req *http.Reques
 	//Insert to MongoDb
 	uc.session.DB("iot-golang").C("data").Insert(jsonData) //Inserts the data in MongoDb
 	id_map := models.Map_id{
+		jsonData.ID,
 		jsonData.UserDetails.FirstName,
-		string(jsonData.ID),
 	}
 
-	uc.session.DB("iot-golang").C("id-map").Insert(id_map) //Inserts the id-firstname map into MongoDb
+	uc.session.DB("iot-golang").C("idmap").Insert(id_map) //Inserts the id-firstname map into MongoDb
 
 	//response back to client
 	jsn_data, _ := json.Marshal(jsonData)
 	id_mp_jsn, _ := json.Marshal(id_map)
 	res.Header().Set("Content-Type", "application/json")
 	res.WriteHeader(http.StatusCreated) //201
-	fmt.Fprintf(res, "%s\n%s", jsn_data, id_mp_jsn)
+	fmt.Fprintf(res, "%s\n %s", jsn_data, id_mp_jsn)
 
 }
 
 func (uc UserController) FetchHandler(res http.ResponseWriter, req *http.Request) {
 
-	res.Header().Set("Content-Type", "application/json")
+	// res.Header().Set("Content-Type", "application/json")
 
-	var jsonData models.Customer
-	//var := mux.Vars(req)
-	//id := var["id"]
+	// var jsonData models.Customer
+	// //var := mux.Vars(req)
+	// //id := var["id"]
 
-	if err := uc.session.DB("iot-golang").C("data").FindId(id).One(&jsonData); err != nil {
-		res.WriteHeader(404) //Page not found
-		return
-	}
+	// if err := uc.session.DB("iot-golang").C("data").FindId(id).One(&jsonData); err != nil {
+	// 	res.WriteHeader(404) //Page not found
+	// 	return
+	// }
 
-	jsn_data, _ := json.Marshal(jsonData)
-	res.WriteHeader("Content-Type", "application/json")
-	res.WriteHeader(http.StatusCreated)
-	fwt.Fprintf(res, "%s", jsn_data)
+	// jsn_data, _ := json.Marshal(jsonData)
+	// res.WriteHeader("Content-Type", "application/json")
+	// res.WriteHeader(http.StatusCreated)
+	// fwt.Fprintf(res, "%s", jsn_data)
 
 }
 

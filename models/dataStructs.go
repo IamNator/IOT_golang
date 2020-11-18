@@ -34,6 +34,6 @@ type Customer struct {
 
 /**************For Keeping Track of id*******************/
 type Map_id struct {
-	ID        string `json:"id"`
-	FirstName string `json:"first_name"`
+	ID        bson.ObjectId `json: "id"`
+	FirstName string        `json:"first_name"`
 }
