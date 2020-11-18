@@ -26,8 +26,14 @@ type Device struct {
 
 /*****************Main struct **************/
 type Customer struct {
-	ID          string 		  `json: "id"`  //data type will be updated before production
+	ID          bson.ObjectId `json: "id"` //data type will be updated before production
 	UserDetails *UserDetails  `json:"user_details"`
 	Meter       *Meter        `json:"meter"`
 	Devices     []Device      `json:"devices"`
+}
+
+/**************For Keeping Track of id*******************/
+type Map_id struct {
+	ID        string `json:"id"`
+	FirstName string `json:"first_name"`
 }

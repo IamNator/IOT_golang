@@ -12,15 +12,15 @@ import (
 )
 
 //For mongodb Access
-type UserController struct {       //data type associated with desired methods
-	session *mgo.Session 
+type UserController struct { //data type associated with desired methods
+	session *mgo.Session
 }
 
 func NewUserController(s *mgo.Session) *UserController { //Embeds the object in a function that returns address of struct...(or a datatype with the desired methods)
 	return &UserController{s}
 }
 
-func GetSession() *mgo.Session {  //Returns the address of the newly created object
+func GetSession() *mgo.Session { //Returns the address of the newly created object
 	//Connect to our local mongo
 	s, err := mgo.Dial("mongodb://localhost") //listens on port 27017
 	//Check if connection err, is mongo running?
@@ -40,26 +40,33 @@ func (uc UserController) InsertHandler(res http.ResponseWriter, req *http.Reques
 	jsonData.ID = bson.NewObjectId()
 	//Insert to MongoDb
 	uc.session.DB("iot-golang").C("data").Insert(jsonData) //Inserts the data in MongoDb
+	id_map := models.Map_id{
+		jsonData.UserDetails.FirstName,
+		string(jsonData.ID),
+	}
+
+	uc.session.DB("iot-golang").C("id-map").Insert(id_map) //Inserts the id-firstname map into MongoDb
 
 	//response back to client
 	jsn_data, _ := json.Marshal(jsonData)
+	id_mp_jsn, _ := json.Marshal(id_map)
 	res.Header().Set("Content-Type", "application/json")
 	res.WriteHeader(http.StatusCreated) //201
-	fmt.Fprintf(res, "%s", jsn_data)
+	fmt.Fprintf(res, "%s\n%s", jsn_data, id_mp_jsn)
 
 }
 
 func (uc UserController) FetchHandler(res http.ResponseWriter, req *http.Request) {
 
 	res.Header().Set("Content-Type", "application/json")
-	
-	var jsonData models.Customer
-	var := mux.Vars(req)
-	id := var["id"]
 
-	if err := uc.session.DB("iot-golang").C("data").FindId(id).One(&jsonData); 	err != nil {
-			res.WriteHeader(404)  //Page not found
-			return
+	var jsonData models.Customer
+	//var := mux.Vars(req)
+	//id := var["id"]
+
+	if err := uc.session.DB("iot-golang").C("data").FindId(id).One(&jsonData); err != nil {
+		res.WriteHeader(404) //Page not found
+		return
 	}
 
 	jsn_data, _ := json.Marshal(jsonData)

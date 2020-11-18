@@ -22,7 +22,7 @@ func main() {
 	router.HandleFunc("/api/fetch/{id}", uc.FetchHandler).Methods("GET")
 	router.HandleFunc("/api/fetch/{id}", uc.DeleteHandler).Methods("DELETE")
 
-	fmt.Println("Server started on part 9080")
+	fmt.Println("Server started on port localhost:9080")
 	log.Fatal(http.ListenAndServe(":9080", router))
 
 }
